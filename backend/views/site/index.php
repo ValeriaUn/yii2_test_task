@@ -31,9 +31,9 @@ use yii\grid\GridView; ?>
             'dataProvider' => $authors,
             'columns' => [
                 'id',
-                'first_nam',
+                'first_name',
                 'last_name',
-//                'genre',
+                'book_amount',
                 'created_at',
             ],
         ]); ?>

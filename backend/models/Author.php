@@ -20,6 +20,10 @@ use Yii;
 class Author extends \yii\db\ActiveRecord
 {
     /**
+     * @var string
+     */
+    public $book_amount;
+    /**
      * {@inheritdoc}
      */
     public static function tableName()

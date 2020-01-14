@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use app\models\Author;
@@ -67,8 +68,9 @@ class SiteController extends Controller
         $authors = new ActiveDataProvider([
             'query' => Author::find()
                 ->alias('a')
-                ->select('first_name, last_name, a.created_at, count(r.author_id) as book_amount')
-                ->leftJoin(['r' => BookToAuthor::tableName(), 'r.author_id =  a.id']),
+                ->select('a.id, first_name, last_name, a.created_at, count(r.author_id) as book_amount')
+                ->innerJoin( ['r' => BookToAuthor::tableName(), 'a.id = r.author_id'])
+                ->groupBy('r.author_id'),
         ]);
         $books = new ActiveDataProvider([
             'query' => Book::find(),
