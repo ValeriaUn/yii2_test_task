@@ -3,7 +3,9 @@ namespace backend\controllers;
 
 use app\models\Author;
 use app\models\Book;
+use app\models\BookToAuthor;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -62,9 +64,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $authors = Author::find()->alias('a')->all();
+        $authors = new ActiveDataProvider([
+            'query' => Author::find()
+                ->alias('a')
+                ->select('first_name, last_name, a.created_at, count(r.author_id) as book_amount')
+                ->leftJoin(['r' => BookToAuthor::tableName(), 'r.author_id =  a.id']),
+        ]);
+        $books = new ActiveDataProvider([
+            'query' => Book::find(),
+        ]);
 
-        return $this->render('index', ['books' => Book::find()->all(), 'authors' => $authors]);
+        return $this->render('index', ['books' => $books, 'authors' => $authors]);
     }
 
     /**
